@@ -67,11 +67,9 @@ src/
 ├── store/              # Estado de la aplicación
 │   └── app-store.ts
 ├── types/              # Definiciones de tipos
-│   ├── wiremock.ts
-│   └── css.d.ts
-├── styles/             # Estilos globales
-│   └── global.css
-└── utils/              # Utilidades
+│   └── wiremock.ts
+└── styles/             # Estilos globales
+    └── global.css
 ```
 
 ### Principios de la Arquitectura Screaming
@@ -129,12 +127,12 @@ src/
 
 ### Componentes CSS
 
-- **Botones**: `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`
+- **Botones**: `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-lg`
 - **Formularios**: `.form-input`, `.form-select`, `.form-textarea`
 - **Cards**: `.card`, `.card-header`, `.card-body`
 - **Tablas**: `.table`, `.table th`, `.table td`
 - **Badges**: `.badge`, `.badge-success`, `.badge-error`
-- **Alertas**: `.alert`, `.alert-success`, `.alert-error`
+- **Alertas**: `.alert`, `.alert-error`
 
 ## 🎯 Funcionalidades
 

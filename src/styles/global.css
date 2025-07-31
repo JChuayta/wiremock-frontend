@@ -198,11 +198,7 @@ html, body {
   padding: 1.5rem;
 }
 
-.card-footer {
-  background-color: #f8fafc;
-  border-top: 1px solid var(--border-color);
-  padding: 1rem 1.5rem;
-}
+
 
 .container {
   max-width: 1200px;
@@ -282,11 +278,7 @@ html, body {
   margin-bottom: 1rem;
 }
 
-.alert-success {
-  background-color: #f0fdf4;
-  border-color: #bbf7d0;
-  color: #166534;
-}
+
 
 .alert-error {
   background-color: #fef2f2;
@@ -294,17 +286,9 @@ html, body {
   color: #dc2626;
 }
 
-.alert-warning {
-  background-color: #fffbeb;
-  border-color: #fed7aa;
-  color: #92400e;
-}
 
-.alert-info {
-  background-color: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1e40af;
-}
+
+
 
 .loading {
   display: flex;
