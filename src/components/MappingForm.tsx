@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { mappingsApi } from '../services/wiremock-api';
 import { useAppStore } from '../store/app-store';
 import type { WireMockMapping } from '../types/wiremock';
+import './MappingForm.css';
 
 const HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'];
 
@@ -115,7 +116,7 @@ export default function MappingForm() {
   }
 
   return (
-    <div className="w-full">
+    <div className="mapping-form w-full">
       <div className="flex items-center gap-4 mb-6">
         <button
           onClick={() => navigate('/')}

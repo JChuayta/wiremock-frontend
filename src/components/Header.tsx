@@ -2,6 +2,7 @@ import { Plus, Settings, Wifi, WifiOff } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { generalApi } from '../services/wiremock-api';
+import './Header.css';
 
 export default function Header() {
   const [isConnected, setIsConnected] = useState(false);

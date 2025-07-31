@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mappingsApi } from '../services/wiremock-api';
 import { useAppStore } from '../store/app-store';
+import './MappingsList.css';
 
 export default function MappingsList() {
   const { state, actions } = useAppStore();
@@ -99,15 +100,17 @@ export default function MappingsList() {
 
   if (state.loading) {
     return (
-      <div className="loading">
-        <div className="spinner" />
-        Cargando mappings...
+      <div className="mappings-list">
+        <div className="loading">
+          <div className="spinner" />
+          Cargando mappings...
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full">
+    <div className="mappings-list w-full">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Mappings</h2>
         <div className="flex gap-2">

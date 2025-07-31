@@ -2,6 +2,7 @@ import { Copy, Eye, RefreshCw, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { requestsApi } from '../services/wiremock-api';
 import { useAppStore } from '../store/app-store';
+import './RequestsPage.css';
 
 export default function RequestsPage() {
   const { state, actions } = useAppStore();
@@ -73,15 +74,18 @@ export default function RequestsPage() {
 
   if (state.loading) {
     return (
-      <div className="loading">
-        <div className="spinner" />
-        Cargando requests...
+      <div className="requests-page">
+        <div className="loading">
+          <div className="spinner" />
+          Cargando requests...
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container">
+    <div className="requests-page">
+      <div className="container">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Requests Log</h2>
         <div className="flex gap-2">
@@ -196,6 +200,7 @@ export default function RequestsPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 } 
