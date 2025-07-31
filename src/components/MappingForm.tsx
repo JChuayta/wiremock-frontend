@@ -1,6 +1,7 @@
 import { ArrowLeft, Save, TestTube } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { buildAbsoluteUrl } from '../config/api';
 import { mappingsApi } from '../services/wiremock-api';
 import { useAppStore } from '../store/app-store';
 import type { WireMockMapping } from '../types/wiremock';
@@ -79,19 +80,14 @@ export default function MappingForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    try {
-      setIsSaving(true);
-      actions.setError(null);
+    setIsSaving(true);
 
+    try {
       if (id) {
         await mappingsApi.update(id, formData);
-        actions.updateMapping(formData);
       } else {
-        const newMapping = await mappingsApi.create(formData);
-        actions.addMapping(newMapping);
+        await mappingsApi.create(formData);
       }
-
       navigate('/');
     } catch (error) {
       actions.setError('Error al guardar el mapping');
@@ -102,7 +98,7 @@ export default function MappingForm() {
   };
 
   const testMapping = () => {
-    const url = `http://localhost:8080${formData.request.urlPath}`;
+    const url = buildAbsoluteUrl(formData.request.urlPath || '');
     window.open(url, '_blank');
   };
 

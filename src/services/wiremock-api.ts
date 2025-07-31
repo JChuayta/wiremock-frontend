@@ -1,13 +1,14 @@
 import axios from 'axios';
+import { getProxyUrl } from '../config/api';
 import type {
-    WireMockMapping,
-    WireMockMappingsResponse,
-    WireMockRequestLog,
-    WireMockRequestsResponse
+  WireMockMapping,
+  WireMockMappingsResponse,
+  WireMockRequestLog,
+  WireMockRequestsResponse
 } from '../types/wiremock';
 
 // Configuración de la API
-const API_BASE_URL = 'http://localhost:8080';
+const API_BASE_URL = getProxyUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,

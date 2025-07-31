@@ -1,13 +1,17 @@
 import { Copy, Edit, Eye, Plus, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { buildAbsoluteUrl } from '../config/api';
 import { mappingsApi } from '../services/wiremock-api';
 import { useAppStore } from '../store/app-store';
 import './MappingsList.css';
+import Pagination from './Pagination';
 
 export default function MappingsList() {
   const { state, actions } = useAppStore();
   const [selectedMappings, setSelectedMappings] = useState<Set<string>>(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     loadMappings();
@@ -80,6 +84,24 @@ export default function MappingsList() {
     navigator.clipboard.writeText(text);
   };
 
+  const handleCopyUrl = (mapping: any, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Si es doble clic, copiar URL absoluta
+    if (event.detail === 2) {
+      const relativeUrl = mapping.request.urlPath || mapping.request.url || '';
+      const absoluteUrl = buildAbsoluteUrl(relativeUrl);
+      copyToClipboard(absoluteUrl);
+      console.log('URL absoluta copiada:', absoluteUrl);
+    } else {
+      // Clic simple, copiar URL relativa
+      const relativeUrl = mapping.request.urlPath || mapping.request.url || '';
+      copyToClipboard(relativeUrl);
+      console.log('URL relativa copiada:', relativeUrl);
+    }
+  };
+
   const getMethodBadgeClass = (method: string) => {
     const methodColors: Record<string, string> = {
       GET: 'badge-success',
@@ -96,6 +118,16 @@ export default function MappingsList() {
     if (status >= 400 && status < 500) return 'badge-warning';
     if (status >= 500) return 'badge-error';
     return 'badge-info';
+  };
+
+  // Calcular elementos para la página actual
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentMappings = state.mappings.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(state.mappings.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   if (state.loading) {
@@ -179,7 +211,7 @@ export default function MappingsList() {
                 </tr>
               </thead>
               <tbody>
-                {state.mappings.map((mapping) => (
+                {currentMappings.map((mapping) => (
                   <tr key={mapping.id}>
                     <td>
                       <input
@@ -201,9 +233,9 @@ export default function MappingsList() {
                           {mapping.request.urlPath || mapping.request.url || 'N/A'}
                         </span>
                         <button
-                          onClick={() => copyToClipboard(mapping.request.urlPath || mapping.request.url || '')}
+                          onClick={(event) => handleCopyUrl(mapping, event)}
                           className="btn btn-sm btn-secondary"
-                          title="Copiar URL"
+                          title="Clic: Copiar URL relativa | Doble clic: Copiar URL absoluta"
                         >
                           <Copy size={12} />
                         </button>
@@ -247,6 +279,13 @@ export default function MappingsList() {
               </tbody>
             </table>
           </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            totalItems={state.mappings.length}
+            itemsPerPage={itemsPerPage}
+          />
         </div>
       )}
     </div>

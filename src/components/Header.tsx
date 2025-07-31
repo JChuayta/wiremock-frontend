@@ -1,5 +1,5 @@
 import { Plus, Settings, Wifi, WifiOff } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { generalApi } from '../services/wiremock-api';
 import './Header.css';
@@ -9,11 +9,11 @@ export default function Header() {
   const [isChecking, setIsChecking] = useState(true);
   const location = useLocation();
 
-  useEffect(() => {
-    checkConnection();
-    const interval = setInterval(checkConnection, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  // useEffect(() => {
+  //   checkConnection();
+  //   const interval = setInterval(checkConnection, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const checkConnection = async () => {
     try {

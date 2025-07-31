@@ -1,6 +1,6 @@
-# WireMock Frontend Manager
+# WireMock Manager
 
-Un frontend moderno y elegante para gestionar endpoints falsos de WireMock. Desarrollado con React, TypeScript y CSS puro modular, siguiendo la arquitectura Screaming.
+Una interfaz web moderna y elegante para gestionar endpoints falsos de WireMock. Desarrollado con React, TypeScript y CSS puro modular, siguiendo la arquitectura Screaming.
 
 ## 🚀 Características
 
@@ -26,7 +26,7 @@ Un frontend moderno y elegante para gestionar endpoints falsos de WireMock. Desa
 1. **Clonar el repositorio**
    ```bash
    git clone <tu-repositorio>
-   cd wiremock-frontend
+   cd wiremock-manager
    ```
 
 2. **Instalar dependencias**
@@ -162,10 +162,25 @@ src/
 
 ### Variables de Entorno
 
-Crea un archivo `.env` en la raíz del proyecto:
+Crea un archivo `.env` en la raíz del proyecto basado en `env.example`:
+
+> ⚠️ **Importante**: Nunca subas el archivo `.env` al repositorio. Contiene configuraciones sensibles.
 
 ```env
-VITE_WIREMOCK_URL=http://localhost:8080
+# Configuración de la API de WireMock
+VITE_API_BASE_URL=https://tu-servidor-wiremock.com
+VITE_PROXY_TARGET=https://tu-servidor-wiremock.com
+VITE_USE_PROXY=false
+
+# Para desarrollo local con WireMock en puerto 8080:
+# VITE_API_BASE_URL=http://localhost:8080
+# VITE_PROXY_TARGET=http://localhost:8080
+# VITE_USE_PROXY=false
+
+# Para usar con proxy de Vite (recomendado para desarrollo):
+# VITE_API_BASE_URL=/api
+# VITE_PROXY_TARGET=https://tu-servidor-wiremock.com
+# VITE_USE_PROXY=true
 ```
 
 ### Configuración de WireMock
@@ -235,6 +250,24 @@ npm run lint         # Linting
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
+## 🔒 Seguridad
+
+### Variables de Entorno
+
+- **Nunca subas `.env` al repositorio**: Contiene URLs y configuraciones sensibles
+- **Usa `env.example` como plantilla**: Copia y modifica según tu entorno
+- **Configura URLs específicas localmente**: Cada desarrollador debe tener su propia configuración
+
+### Configuración Segura
+
+```bash
+# Copia el archivo de ejemplo
+cp env.example .env
+
+# Edita con tus configuraciones específicas
+nano .env
+```
+
 ## 🆘 Soporte
 
 Si tienes problemas o preguntas:
@@ -242,7 +275,8 @@ Si tienes problemas o preguntas:
 1. Revisa la documentación de WireMock
 2. Verifica que WireMock esté ejecutándose en el puerto correcto
 3. Revisa la consola del navegador para errores
-4. Abre un issue en el repositorio
+4. Verifica que las variables de entorno estén configuradas correctamente
+5. Abre un issue en el repositorio
 
 ## 🔄 Changelog
 

@@ -266,6 +266,11 @@ html, body {
   color: #1e40af;
 }
 
+.badge-primary {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
 .badge-secondary {
   background-color: #f1f5f9;
   color: #475569;

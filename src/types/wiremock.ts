@@ -8,6 +8,7 @@ export interface WireMockRequest {
   urlPattern?: string;
   headers?: Record<string, string>;
   queryParameters?: Record<string, string>;
+  cookies?: Record<string, string>;
   bodyPatterns?: Array<{
     equalTo?: string;
     caseInsensitive?: boolean;

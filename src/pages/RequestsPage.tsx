@@ -1,5 +1,8 @@
 import { Copy, Eye, RefreshCw, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Pagination from '../components/Pagination';
+import { buildAbsoluteUrl } from '../config/api';
 import { requestsApi } from '../services/wiremock-api';
 import { useAppStore } from '../store/app-store';
 import './RequestsPage.css';
@@ -7,6 +10,8 @@ import './RequestsPage.css';
 export default function RequestsPage() {
   const { state, actions } = useAppStore();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     loadRequests();
@@ -40,6 +45,7 @@ export default function RequestsPage() {
     try {
       await requestsApi.reset();
       actions.setRequests([]);
+      setCurrentPage(1);
     } catch (error) {
       actions.setError('Error al limpiar los logs');
       console.error('Error clearing requests:', error);
@@ -48,6 +54,24 @@ export default function RequestsPage() {
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
+  };
+
+  const handleCopyUrl = (request: any, event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Si es doble clic, copiar URL absoluta
+    if (event.detail === 2) {
+      const relativeUrl = request.request.url;
+      const absoluteUrl = buildAbsoluteUrl(relativeUrl);
+      copyToClipboard(absoluteUrl);
+      console.log('URL absoluta copiada:', absoluteUrl);
+    } else {
+      // Clic simple, copiar URL relativa
+      const relativeUrl = request.request.url;
+      copyToClipboard(relativeUrl);
+      console.log('URL relativa copiada:', relativeUrl);
+    }
   };
 
   const formatDate = (timestamp: number) => {
@@ -70,6 +94,16 @@ export default function RequestsPage() {
     if (status >= 400 && status < 500) return 'badge-warning';
     if (status >= 500) return 'badge-error';
     return 'badge-info';
+  };
+
+  // Calcular elementos para la página actual
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentRequests = state.requests.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(state.requests.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   if (state.loading) {
@@ -143,7 +177,7 @@ export default function RequestsPage() {
                 </tr>
               </thead>
               <tbody>
-                {state.requests.map((request) => (
+                {currentRequests.map((request) => (
                   <tr key={request.id}>
                     <td>
                       <span className={`badge ${getMethodBadgeClass(request.request.method)}`}>
@@ -156,9 +190,9 @@ export default function RequestsPage() {
                           {request.request.url}
                         </span>
                         <button
-                          onClick={() => copyToClipboard(request.request.url)}
+                          onClick={(event) => handleCopyUrl(request, event)}
                           className="btn btn-sm btn-secondary"
-                          title="Copiar URL"
+                          title="Clic: Copiar URL relativa | Doble clic: Copiar URL absoluta"
                         >
                           <Copy size={12} />
                         </button>
@@ -181,16 +215,13 @@ export default function RequestsPage() {
                     </td>
                     <td>
                       <div className="flex gap-1">
-                        <button
-                          onClick={() => {
-                            // Aquí podrías abrir un modal con los detalles del request
-                            console.log('Request details:', request);
-                          }}
+                        <Link
+                          to={`/request/${request.id}`}
                           className="btn btn-sm btn-secondary"
                           title="Ver detalles"
                         >
                           <Eye size={14} />
-                        </button>
+                        </Link>
                       </div>
                     </td>
                   </tr>
@@ -198,6 +229,14 @@ export default function RequestsPage() {
               </tbody>
             </table>
           </div>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            totalItems={state.requests.length}
+            itemsPerPage={itemsPerPage}
+          />
         </div>
       )}
       </div>
