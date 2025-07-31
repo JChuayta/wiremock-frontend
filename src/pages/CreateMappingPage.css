@@ -1,0 +1,9 @@
+.create-mapping-page {
+  width: 100%;
+}
+
+.create-mapping-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+} 
